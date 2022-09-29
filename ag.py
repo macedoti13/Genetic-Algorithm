@@ -4,7 +4,7 @@ import random
 
 class AlgoritmoGenetico:
     
-    def __init__(self, max_geracoes: int = 1000, pop_size: int = 100, n_elites: int = 1, reposition: bool = False, reposition_n: int = 1) -> None:
+    def __init__(self, max_geracoes: int = 1000, pop_size: int = 100, n_elites: int = 1, reposition: bool = False, reposition_n: int = 1, smart_first_gen: bool = True) -> None:
         """"""
         self.solucao = None
         self.geracoes = 0
@@ -13,6 +13,7 @@ class AlgoritmoGenetico:
         self.n_elites = n_elites
         self.reposition = reposition
         self.reposition_n = reposition_n
+        self.smart_first_gen = smart_first_gen
 
     
     def gera_primeira_pop(self, n: int, lab: Labirinto) -> list:
@@ -23,7 +24,10 @@ class AlgoritmoGenetico:
             a = Individuo()
             a.gera_movimentos(lab.caminho.shape[0]**2*3)
             a.explora(lab)
-            if a.pontuacao > 0:
+            if self.smart_first_gen == True:
+                if a.pontuacao > 0:
+                    pop.append(a)
+            else:
                 pop.append(a)
 
         self.geracoes += 1
@@ -258,7 +262,7 @@ class AlgoritmoGenetico:
                 pontuacoes.append(ind.pontuacao)
 
         # verifica se menos de 5% dos individuos sao diferentes
-        if len(pontuacoes) <= len(pop) * 0.05:
+        if len(pontuacoes) < 2:
             return True
 
         return False
