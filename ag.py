@@ -4,7 +4,7 @@ import random
 
 class AlgoritmoGenetico:
     
-    def __init__(self, max_geracoes: int = 1000, pop_size: int = 100, n_elites: int = 1, reposition: bool = False, reposition_n: int = 1, smart_first_gen: bool = True) -> None:
+    def __init__(self, max_geracoes: int = 1000, pop_size: int = 100, n_elites: int = 1, reposition: bool = False, reposition_n: int = 1, taxa_mutacao: float = 0.01, smart_first_gen: bool = True) -> None:
         """"""
         self.solucao = None
         self.geracoes = 0
@@ -13,6 +13,7 @@ class AlgoritmoGenetico:
         self.n_elites = n_elites
         self.reposition = reposition
         self.reposition_n = reposition_n
+        self.taxa_mutacao = taxa_mutacao
         self.smart_first_gen = smart_first_gen
 
     
@@ -58,9 +59,9 @@ class AlgoritmoGenetico:
 
             # muta um dos dois filhos 
             if random.randint(1, 2) == 1:
-                self._mutacao(filho1)
+                self._mutacao(filho1, 0.01)
             else:
-                self._mutacao(filho2)
+                self._mutacao(filho2, 0.01)
 
             # coloca os filhos mutados na pop
             if len(nova_pop) < len(pop_anterior):
@@ -197,10 +198,13 @@ class AlgoritmoGenetico:
 
 
     @staticmethod
-    def _mutacao(ind: Individuo) -> None:
+    def _mutacao(ind: Individuo, taxa: float) -> None:
         """"""
-        index_mutado = random.randrange(0, len(ind.movimentos))
-        ind.movimentos[index_mutado] = random.randint(0,7)
+        taxa = taxa * 1000
+        for i in range(len(ind.movimentos)):
+            numero = random.randrange(0, 1000)
+            if numero < taxa:
+                ind.movimentos[i] = random.randint(0,7)
     
 
     @staticmethod

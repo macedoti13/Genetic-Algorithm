@@ -4,7 +4,7 @@ from ag import AlgoritmoGenetico
 
 def main():
     lab = Labirinto('labirinto1.txt')
-    ag = AlgoritmoGenetico(1000, 100, 10, True, 5, True)
+    ag = AlgoritmoGenetico(1000, 100, 1, False, 5, 0.008, False)
     ag.fit(lab)
 
 
