@@ -101,6 +101,13 @@ class AlgoritmoGenetico:
                 self.escreve_solucao(solucao, 'saida.txt', lab)
                 break
 
+            # verifica se a populacao convergiu
+            convergiu = self.convergencia(pop)
+            if convergiu:
+                with open('saida.txt', 'a') as f:
+                    f.write('\nPopulacao Convergiu!!!!')
+                break
+
             # gera nova populacao e coloca ela no arquivo
             pop = self.gera_nova_pop(pop, lab)
             self.escreve_geracao(pop, 'saida.txt')
@@ -238,3 +245,20 @@ class AlgoritmoGenetico:
             frases = lab.print()
             for frase in frases:
                 f.write(frase)
+
+    @staticmethod
+    def convergencia(pop: list) -> bool:
+        """"""
+        pontuacoes = []
+        # coloca cada uma das pontuacoes distintas na lista de pontuacao
+        for ind in pop:
+            if ind.pontuacao in pontuacoes:
+                pass
+            else:
+                pontuacoes.append(ind.pontuacao)
+
+        # verifica se menos de 5% dos individuos sao diferentes
+        if len(pontuacoes) <= len(pop) * 0.05:
+            return True
+
+        return False
