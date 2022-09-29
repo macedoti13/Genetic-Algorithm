@@ -5,7 +5,7 @@ import numpy as np
 class Individuo:
 
     def __init__(self) -> None:
-        """"""
+        """Inicializa o objeto individuo."""        
         self.movimentos = []
         self.movimentos_corretos = []
         self.posicoes_percorridas = []
@@ -14,12 +14,25 @@ class Individuo:
     
 
     def gera_movimentos(self, x: int = 10) -> None:
-        """"""
+        """Gera uma sequencia de x movimentos aleatorios para um individuo.
+
+        Args:
+            x (int, optional): Quantidade de movimentos. Defaults to 10.
+        """        
         self.movimentos = [random.randint(0, 7) for _ in range(x)]
 
 
     def _movimenta(self, movimento: int, pos_inicial: tuple) -> tuple:
-        """"""
+        """Gera uma coordenada final para um determindado movimento feito de uma 
+           coordenada inicial. 
+
+        Args:
+            movimento (int): Id do movimento. 
+            pos_inicial (tuple): Coordenada inicial do movimento.
+
+        Returns:
+            tuple: Coordenada final do movimento. 
+        """        
         if movimento == 0: 
             return (pos_inicial[0]-1, pos_inicial[1]-1)
         elif movimento == 1: 
@@ -39,7 +52,18 @@ class Individuo:
 
 
     def anda(self, lab: Labirinto, movimento: int, pos_inicial: tuple) -> tuple:
-        """"""
+        """Executa um movimento e retorna uma posicao final correta. Se o movimento bateu em 
+           uma parede, devolve a mesma posicao inicial (nao andou). Se o movimento levou o individuo
+           a sair do labirinto, devolve uma posicao nula. 
+
+        Args:
+            lab (Labirinto): Labirinto onde o movimento acontece.
+            movimento (int): Id do movimento.
+            pos_inicial (tuple): Coordenadas da posicao inicial. 
+
+        Returns:
+            tuple: Coordenadas da posicao final.
+        """        
         nova_pos = self._movimenta(movimento, pos_inicial)
 
         if (nova_pos[0] >= 0 and nova_pos[0] < lab.caminho.shape[0]) and (nova_pos[1] >= 0 and nova_pos[1] < lab.caminho.shape[0]): 
@@ -53,7 +77,18 @@ class Individuo:
 
 
     def _pontua(self, lab: Labirinto, pos_inicial: tuple, pos_final: tuple, posicoes: list) -> int:
-        """"""
+        """Gera uma pontuacao para um movimento especifico. Verifica se a posicao final eh valida e caso 
+           for, se o indiviuo ja passou por a aquela posicao.
+
+        Args:
+            lab (Labirinto): Labirinto onde o movimento eh executado. 
+            pos_inicial (tuple): Coordenadas iniciais do movimento. 
+            pos_final (tuple): Coordenadas finais do movimento.
+            posicoes (list): Posicoes percorridas pelo individuo.
+
+        Returns:
+            int: Pontos gerado pelo movimento. 
+        """        
         if pos_final == pos_inicial:
             return -1 # bateu em uma parede
         else:
@@ -67,7 +102,13 @@ class Individuo:
 
 
     def explora(self, lab: Labirinto) -> None:
-        """"""
+        """Executa todos os movimentos de um individuo e soma em sua pontuacao total, 
+           os pontos gerados por cada um, atualizando a lista de posicoes percorridas 
+           e de movimentos corretos. 
+
+        Args:
+            lab (Labirinto): Labirinto onde os movimentos sao executados. 
+        """        
         i = 0
         pos_anterior = lab.pos_inicial
         self.posicoes_percorridas.append(lab.pos_inicial)
@@ -103,7 +144,7 @@ class Individuo:
 
 
     def copy(self):
-        """"""
+        """Copia um indivio para outro objeto."""     
         i = Individuo()
         i.movimentos = self.movimentos_corretos
 
@@ -111,7 +152,12 @@ class Individuo:
 
 
     def escreve_movimentos(self) -> list:
-        """"""
+        """Coloca em uma lista uma string explicando cada movimento feito por um 
+           individuo.
+
+        Returns:
+            list: Lista com as strings.
+        """        
         # inicializa varivaveis 
         frases = []
         i = 0
