@@ -131,7 +131,7 @@ class AlgoritmoGenetico:
         # verifica se solucao esta na primeira pop
         if solucao is not None:
             # escreve no arquivo detalhes da solucao
-            return None
+            return solucao
 
         while solucao is None and self.geracoes < self.max_geracoes:
             # procura solucao na populacao formada
@@ -140,7 +140,7 @@ class AlgoritmoGenetico:
             # se encontrou uma solucao, escreve ela no arquivo e para
             if solucao is not None:
                 self.escreve_solucao(solucao, 'saida.txt', lab)
-                break
+                return None
 
             # verifica se a populacao convergiu
             convergiu = self.convergencia(pop)
